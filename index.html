@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BlinkPrint - AI Eye Biometrics Engine</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Google MediaPipe Computer Vision CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <!-- Ambient Glowing Orbs -->
+  <div class="glow-orb orb-1"></div>
+  <div class="glow-orb orb-2"></div>
+  <div class="cyber-grid"></div>
+
+  <!-- AUTHENTICATION SCREEN -->
+  <div id="auth-screen" class="app-card">
+    <header class="app-header">
+      <div class="brand">
+        <div class="pulse-ring"></div>
+        <h2>BLINKPRINT <span class="badge-tag">AI CORE</span></h2>
+      </div>
+      <div id="sys-status" class="status-badge">SYSTEM READY</div>
+    </header>
+
+    <main class="grid-layout">
+      <!-- Camera Scanner Container -->
+      <section class="camera-wrapper">
+        <div class="video-frame">
+          <video id="webcam" autoplay playsinline muted></video>
+          <canvas id="overlay"></canvas>
+
+          <!-- Hologram Scanner Overlay -->
+          <div class="scanner-hud">
+            <div class="corner-bracket tl"></div>
+            <div class="corner-bracket tr"></div>
+            <div class="corner-bracket bl"></div>
+            <div class="corner-bracket br"></div>
+            <div class="laser-beam"></div>
+            <div class="iris-guide"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Analytics & Control Center -->
+      <section class="controls-wrapper">
+        <div class="glass-panel">
+          <h3 class="panel-title">BIOMETRIC METRICS</h3>
+          <div class="metric-box">
+            <span>Liveness Blink Count</span>
+            <span id="blink-count" class="neon-text-cyan">0 / 3</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div id="progress-bar" class="progress-bar-fill"></div>
+          </div>
+
+          <div class="metric-box" style="margin-top: 16px;">
+            <span>Current Eye Aspect Ratio (EAR)</span>
+            <span id="ear-value" class="neon-text-violet">0.00</span>
+          </div>
+        </div>
+
+        <div class="glass-panel">
+          <h3 class="panel-title">REAL-TIME AUDIT LOGS</h3>
+          <div id="log-console" class="log-terminal">
+            <p class="log info">[INIT] AI Neural Engine Ready.</p>
+          </div>
+        </div>
+
+        <div class="btn-group">
+          <button id="start-btn" class="btn btn-glow">START AI SCAN</button>
+          <button id="reset-btn" class="btn btn-outline">RESET</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- SECURED DASHBOARD SCREEN -->
+  <div id="dashboard-screen" class="app-card hidden">
+    <header class="app-header">
+      <div class="brand">
+        <div class="pulse-ring success"></div>
+        <h2>SECURED BIOMETRIC PORTAL</h2>
+      </div>
+      <div class="status-badge success">AUTHENTICATED</div>
+    </header>
+
+    <main class="dashboard-body">
+      <div class="success-banner">
+        <div class="shield-icon">✓</div>
+        <h2>Biometric Verification Passed</h2>
+        <p>Token Key: <code id="user-token">BP-98234-AI-PASS</code></p>
+      </div>
+
+      <div class="dash-grid">
+        <div class="dash-card">
+          <h4>Verification Mode</h4>
+          <p id="dash-mode" class="neon-text-cyan">Deep Eye Mesh Liveness</p>
+        </div>
+        <div class="dash-card">
+          <h4>Confidence Accuracy</h4>
+          <p id="dash-score" class="neon-text-green">98.5% (Passed)</p>
+        </div>
+        <div class="dash-card">
+          <h4>Security Clearance</h4>
+          <p id="dash-level" class="neon-text-violet">High (Anti-Spoof Guard)</p>
+        </div>
+      </div>
+
+      <button id="logout-btn" class="btn btn-outline" style="width: 100%; margin-top: 24px;">RE-AUTHENTICATE / LOGOUT</button>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

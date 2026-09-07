@@ -1,0 +1,368 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap');
+
+:root {
+  --neon-cyan: #00f3ff;
+  --neon-violet: #8000ff;
+  --neon-magenta: #ff0077;
+  --neon-green: #00ff88;
+  --bg-dark: #030611;
+  --glass-bg: rgba(12, 16, 38, 0.75);
+  --glass-border: rgba(0, 243, 255, 0.25);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Rajdhani', sans-serif;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Background Ambient Lighting */
+.cyber-grid {
+  position: fixed;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(128, 0, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 243, 255, 0.06) 1px, transparent 1px);
+  background-size: 40px 40px;
+  z-index: -2;
+}
+
+.glow-orb {
+  position: fixed;
+  width: 450px;
+  height: 450px;
+  border-radius: 50%;
+  filter: blur(140px);
+  opacity: 0.35;
+  z-index: -1;
+}
+
+.orb-1 { top: -100px; left: -100px; background: var(--neon-violet); }
+.orb-2 { bottom: -100px; right: -100px; background: var(--neon-cyan); }
+
+/* Main Card Glassmorphism */
+.app-card {
+  width: 92%;
+  max-width: 1150px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 0 50px rgba(0, 243, 255, 0.15), inset 0 0 20px rgba(128, 0, 255, 0.1);
+  backdrop-filter: blur(16px);
+  transition: all 0.4s ease;
+}
+
+.hidden { display: none !important; }
+
+/* Header Elements */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 243, 255, 0.2);
+  padding-bottom: 18px;
+  margin-bottom: 24px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand h2 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.6rem;
+  letter-spacing: 2px;
+  color: var(--neon-cyan);
+  text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+}
+
+.badge-tag {
+  font-size: 0.75rem;
+  color: var(--neon-violet);
+  background: rgba(128, 0, 255, 0.2);
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--neon-violet);
+}
+
+.pulse-ring {
+  width: 12px;
+  height: 12px;
+  background: var(--neon-cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--neon-cyan);
+  animation: pulse 1.8s infinite;
+}
+
+.pulse-ring.success {
+  background: var(--neon-green);
+  box-shadow: 0 0 12px var(--neon-green);
+}
+
+.status-badge {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 8px 18px;
+  border-radius: 20px;
+  background: rgba(0, 243, 255, 0.08);
+  border: 1px solid var(--neon-cyan);
+  color: var(--neon-cyan);
+  box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+}
+
+.status-badge.success {
+  background: rgba(0, 255, 136, 0.1);
+  border-color: var(--neon-green);
+  color: var(--neon-green);
+  box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+}
+
+/* Grid Layout */
+.grid-layout {
+  display: grid;
+  grid-template-columns: 1.8fr 1.2fr;
+  gap: 24px;
+}
+
+/* Camera Scanner Box */
+.video-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 243, 255, 0.3);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+}
+
+#webcam, #overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scaleX(-1);
+}
+
+#overlay { z-index: 2; }
+
+/* Cyber HUD Overlays */
+.scanner-hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.corner-bracket {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border-color: var(--neon-cyan);
+  border-style: solid;
+  filter: drop-shadow(0 0 8px var(--neon-cyan));
+}
+
+.tl { top: 16px; left: 16px; border-width: 3px 0 0 3px; }
+.tr { top: 16px; right: 16px; border-width: 3px 3px 0 0; }
+.bl { bottom: 16px; left: 16px; border-width: 0 0 3px 3px; }
+.br { bottom: 16px; right: 16px; border-width: 0 3px 3px 0; }
+
+.laser-beam {
+  position: absolute;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--neon-cyan), var(--neon-magenta), transparent);
+  box-shadow: 0 0 20px var(--neon-cyan);
+  top: 0;
+  opacity: 0;
+}
+
+.scanning .laser-beam {
+  opacity: 1;
+  animation: laserScan 2.2s infinite ease-in-out;
+}
+
+.iris-guide {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 220px; height: 130px;
+  border: 1px dashed rgba(0, 243, 255, 0.5);
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);
+}
+
+/* Glass Control Panels */
+.controls-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.glass-panel {
+  background: rgba(5, 10, 25, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 18px;
+  border-radius: 12px;
+}
+
+.panel-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 1.5px;
+  color: #8da4ce;
+  margin-bottom: 14px;
+}
+
+.metric-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.neon-text-cyan { color: var(--neon-cyan); font-family: 'Orbitron', sans-serif; font-size: 1.4rem; }
+.neon-text-violet { color: var(--neon-violet); font-family: 'Orbitron', sans-serif; font-size: 1.3rem; }
+.neon-text-green { color: var(--neon-green); font-family: 'Orbitron', sans-serif; font-size: 1.3rem; }
+
+.progress-bar-bg {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--neon-violet), var(--neon-cyan));
+  box-shadow: 0 0 10px var(--neon-cyan);
+  transition: width 0.3s ease;
+}
+
+.log-terminal {
+  height: 130px;
+  overflow-y: auto;
+  font-family: monospace;
+  font-size: 0.82rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.log.info { color: #8da4ce; }
+.log.warn { color: var(--neon-cyan); }
+.log.success { color: var(--neon-green); }
+
+/* Buttons */
+.btn-group {
+  display: flex;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.btn {
+  flex: 1;
+  padding: 14px;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-glow {
+  background: linear-gradient(135deg, var(--neon-cyan), var(--neon-violet));
+  color: #fff;
+  box-shadow: 0 0 20px rgba(0, 243, 255, 0.4);
+}
+
+.btn-glow:hover {
+  box-shadow: 0 0 30px rgba(0, 243, 255, 0.7);
+  transform: translateY(-2px);
+}
+
+.btn-outline {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+.btn-outline:hover { background: rgba(255, 255, 255, 0.15); }
+
+/* Dashboard Styles */
+.dashboard-body {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: center;
+  padding: 20px 0;
+}
+
+.success-banner { text-align: center; }
+
+.shield-icon {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: rgba(0, 255, 136, 0.15);
+  border: 2px solid var(--neon-green);
+  color: var(--neon-green);
+  font-size: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px auto;
+  box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+}
+
+.dash-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  width: 100%;
+}
+
+.dash-card {
+  background: rgba(5, 10, 25, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 18px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.dash-card h4 { font-size: 0.85rem; color: #8da4ce; margin-bottom: 10px; }
+
+@keyframes laserScan {
+  0% { top: 0%; }
+  50% { top: 100%; }
+  100% { top: 0%; }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.5; }
+}
